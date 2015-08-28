@@ -1,0 +1,7 @@
+- Faire disparaitre le bouton AllerPayer si le prix du panier est superieur au budget maximal.
+
+- Flasher un message non bloquant quand le paiement par CB est accepté.
+
+- "s' amuser" a faire une authentification admin qui permet de passer commande à une centrale d' Achat ex Rungis , puis faire base de donnée sqlite3 pour gerer inventaires et prix des articles.
+
+- authentification compte client, avec messages asynchrone : "Arrivage de Poisson frais" si date = vendredi ; " Muguet à -50%" tous les jours si heure >= 18h00 et < 20h00.

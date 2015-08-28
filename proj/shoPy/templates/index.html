@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+
+
+
+
+		$(function() {
+      $('#budget_max').bind('change', function() {
+        $.getJSON('/MAJ_budget_max', {
+          new_budget_max: $('#budget_max').val()
+          
+        }, function(data) {
+          $("#budmax").html(data.new_budget_max);
+         
+        });
+        
+      });
+
+    
+
+
+			});
+
+
+
+
+
+	
+    $('.marked').each(function(){
+        var monID = '' + $(this).attr('id');
+
+        $(this).click(function(){
+
+
+            $.ajax(
+             {
+                type:'GET',
+                url:$SCRIPT_ROOT + '/ACHETER',
+
+                dataType: "JSON",
+
+
+                data:{clikedname: $(this).attr('id')},
+                
+				success: function(data){
+                  
+				  
+				  $('#summary').html(data);				  
+				  
+				  obj = JSON.parse(data);
+
+
+				  $.each(obj, function (key, value) {
+    				
+
+    				$('#'+key).html(value);
+    				
+    					
+									})
+
+				  
+
+                  document.getElementById('caisse').play();
+
+
+                  // http://stackoverflow.com/questions/1086404/string-to-object-in-js
+
+                
+
+				var article_rare
+
+				
+
+				for ( article_rare in obj.MagPan) {
+    				if (obj[article_rare] < obj[(obj.MagPan[article_rare])] + 6 ) {
+
+    					penurie = article_rare.replace("mag_Q", "")
+
+        				
+
+
+
+        				var bouton_penurie = document.getElementById(penurie+'5buy');
+				    
+				    	bouton_penurie.style.display = 'none';
+
+
+
+				    	if (obj[article_rare] < obj[(obj.MagPan[article_rare])] + 1 ) {
+
+							
+				    		var bouton_penurie = document.getElementById(penurie+'1buy');
+				    
+				    		bouton_penurie.style.display = 'none';
+
+                alert(' Le rayon ' + penurie + '  est  épuisé !');
+							}
+
+
+
+					}
+
+
+					if (obj[article_rare] >= obj[(obj.MagPan[article_rare])] + 1 ) {
+
+						abondance = article_rare.replace("mag_Q", "")
+						
+			   			var bouton_abondance = document.getElementById(abondance+'1buy');
+				    
+			    		bouton_abondance.style.display = 'inline';
+
+
+
+
+			    		if (obj[article_rare] >= obj[(obj.MagPan[article_rare])] + 6 ) {
+					
+				    		var bouton_abondance = document.getElementById(abondance+'5buy');
+				    
+				    		bouton_abondance.style.display = 'inline';
+
+
+							}
+
+						}
+
+
+
+
+
+				}
+
+
+
+                }
+
+
+             }
+          );
+
+        });  
+	
+
+
+
+  });   
+
+
+
+
+});
+
+
+
+      
+</script>
+
+  
+
+
+<audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+
+<audio id="Coin_Drop" src="static/sound/Coin_Drop.mp3" width="320" height="240"></audio>
+
+<audio id="female" src="static/sound/Oh_Yeah_Female.mp3" width="320" height="240"></audio>
+
+<p>
+  
+  
+</p>
+<span id="analyse" value="" </span>
+
+
+<table>
+{% for x in mon_mag.mag_liste %}
+   <tr>
+        
+        <td> <img src="static/images/{{ x }}.jpg" alt="Photo de {{ x }}" title="{{ x }}" height="130">
+ </td>
+        <td> stock :  <div id="mag_Q{{ x }}"> {{mon_mag[x]}}  </div>           </td><td>       Prix :  <span id="mag_pU{{ x }}">  {{mon_mag.mag_pU[x]}} </span> euros le kilo </td>
+
+        <td><audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+<button type="button"  size="10" id="{{ x }}CANCEL" class="marked" onclick="document.getElementById('caisse').play()" name="Calculbutton" = >annuler</button>
+   </td>
+
+   <td><audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+<button type="button"  size="10" id="{{ x }}1drop" class="marked" onclick="document.getElementById('caisse').play()" name="Calculbutton" = >reposer 1</button>
+   </td>
+
+   <td><audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+<button type="button"  size="10" id="{{ x }}1buy"  class="marked" name="Calculbutton" = >ACHETER 1</button>
+   </td>
+
+   <td><audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+<button type="button"  size="10" id="{{ x }}5buy"  name="Calculbutton" class="marked" = >ACHETER 5</button>
+   </td>
+
+
+
+   <td> Dans votre panier :  <div id="pan_Q{{ x }}">  {{mon_panier[x]}} </div> kg
+   </td>
+
+
+
+   <td> = = = => ce qui coute : ... <div id="pan_pA{{ x }}">  {{mon_panier.pan_pA[x]}} </div> ... euros $$$
+   </td>
+
+   </tr>  
+        
+{% endfor %}
+
+
+<h2> Entrez votre budget maximal     
+<span>
+<select id="budget_max" > 
+  <option value="100">100</option>
+  <option value="150">150</option>
+  <option value="200" selected>200</option>
+  <option value="250">250</option>
+  <option value="300">300</option>
+</select></span></h2>
+
+
+<h2> Refresh pour voir le decalage entre template jinja et le javascript : </h2> 
+
+<h3>  Template  Jinja:   {{ mon_client.budget_max }}   <pre>      </pre>   versus js: <span id="budmax">    * * * </span> </h3> 
+
+
+
+
+<div id="summary"> ici les infos transmises en JSON par le serveur . . . </div>
+ 
+</table>
+
+
+<h2>prix du panier :    <span id="pan_PRIX">    </span></h2>
+<a href="AllerPayer"><button type="button"  size="10" id="AllerPayer" onclick="document.getElementById('caisse').play()" name="AllerPayerBouton" = >AllerPayer</button></a>
+
+
+
+
+<p>
+
+</p>
+
+{% endblock %}

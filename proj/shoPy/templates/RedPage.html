@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+	
+	if (error == 6) {
+		window.alert("sometext");
+		}
+
+
+          
+    
+
+                  
+	};
+             
+
+
+
+      
+</script>
+
+<h1>MAUVAISE COMBINAISON entre le n° de votre CB et son cryptogramme  </h1>
+
+<td> <img src="static/images/ALERTE_ROUGE.png" alt="Photo de ALERTE_ROUGE" title="ALERTE_ROUGE" height="260">
+  
+ 
+<audio id="female" src="static/sound/Oh_Yeah_Female.mp3" width="320" height="240"></audio>
+
+
+<span id="analyse" value="" </span>
+
+
+
+
+<h3> Votre budget maximal {{ mon_client.budget_max }}</h3>
+
+ <h3> Montant de votre commande {{ mon_panier.pan_PRIX }}</h3>
+
+ 
+
+</table>
+
+
+
+
+
+<a href="/"><button type="button"  size="10" id="index" onclick="document.getElementById('caisse').play()" name="indexBouton" = > Retourner page Accueuil</button></a>
+
+
+<a href="AllerPayer"><button type="button"  size="10" id="AllerPayer" onclick="document.getElementById('caisse').play()" name="AllerPayerBouton" = >AllerPayer</button></a>
+
+{% endblock %}

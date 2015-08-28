@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript"> 
+
+$(document).ready(function() {          
+    $('.marked').each(function(){
+        var monID = '' + $(this).attr('id');
+
+        $(this).click(function(){
+
+
+            $.ajax(
+             {
+                type:'GET',
+                url:$SCRIPT_ROOT + '/ACHETER',
+
+                dataType: "JSON",
+
+
+                data:{clikedname: $(this).attr('id')},
+                
+				success: function(data){
+                  
+				  
+				  $('#summary').html(data);				  
+				  
+				  obj = JSON.parse(data);
+
+				  
+				  
+				  
+				  
+				  
+				  $('#mag_Qpatate').html(obj.mag_Qpatate);
+				  $('#mag_Qviande').html(obj.mag_Qviande);
+				  $('#mag_Qpoisson').html(obj.mag_Qpoisson); 
+				  
+				  $('#mag_Qmuguet').html(obj.kdo_muguet);
+				  
+				  
+				  
+				  $('#pan_Qpatate').html(obj.pan_Qpatate);
+				  $('#pan_Qviande').html(obj.pan_Qviande);
+				  $('#pan_Qpoisson').html(obj.pan_Qpoisson); 
+				  
+				  $('#pan_Qmuguet').html(obj.pan_Qmuguet);
+				  
+				  
+				  
+				  $('#pan_pApatate').html(obj.pan_pApatate);
+				  $('#pan_pAviande').html(obj.pan_pAviande);
+				  $('#pan_pApoisson').html(obj.pan_pApoisson); 
+				  
+				  $('#pan_pAmuguet').html(obj.pan_pAmuguet);
+				  
+				  
+				  
+				  
+
+                  document.getElementById('caisse').play();
+                }
+             }
+          );
+
+        });  
+
+  });     
+});
+
+
+
+      
+</script>
+
+<h1> Simulation de paiement par carte bancaire </h1>
+
+<td> <img src="static/images/CreditCards.jpg" alt="Photo de CreditCards" title="CreditCards" height="260">
+  
+    
+<h4> prix du panier : {{ mon_panier.pan_PRIX }}</h4>
+
+<audio id="caisse" src="static/sound/Cha_Ching.mp3" width="320" height="240"></audio>
+
+
+
+
+<audio id="female" src="static/sound/Oh_Yeah_Female.mp3" width="320" height="240"></audio>
+
+<form method="post" action="{{ url_for('AllerPayer') }}">
+                  <label for="CBnumber"> Numero de CB bidon :</label>
+                  <input type="text" name="CBnumber" id="CBnumber" /><br />
+                  <label for="cryptogramme "> Cryptogramme bidon :</label>
+                  <input type="text" name="cryptogramme" id="CBnumber" /><br />
+                  <input type="submit" />
+</form>
+
+<!--
+-->
+
+
+<p>
+  
+  
+</p>
+<span id="analyse" value="" </span>
+
+
+
+
+<h3> Votre budget maximal {{ mon_client.budget_max }}</h3>
+
+
+
+
+
+
+ 
+</table>
+
+<span>Pour que le paiement fonctionne, tapez 12345 pour la CB, et 345 pour le crypto</span>
+
+
+
+
+
+<a href="/"><button type="button"  size="10" id="index" onclick="document.getElementById('caisse').play()" name="indexBouton" = > Retourner page Accueuil</button></a>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
